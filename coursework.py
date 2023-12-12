@@ -24,3 +24,22 @@ path = "."
 filename_read = os.path.join(path, "full_df.csv")
 df = pd.read_csv(filename_read)
 print(df[0:6392])
+
+df = pd.read_csv(filename_read, na_values=['NA', '?'])
+
+# Strip non-numerics
+df = df.select_dtypes(include=['int', 'float'])
+
+headers = list(df.columns.values)
+fields = []
+
+for field in headers:
+    fields.append({
+        'name' : field,
+        'mean': df[field].mean(),
+        'var': df[field].var(),
+        'sdev': df[field].std()
+    })
+
+for field in fields:
+    print(field)
