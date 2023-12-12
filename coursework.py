@@ -18,3 +18,15 @@ from keras.preprocessing.image import ImageDataGenerator
 from sklearn import metrics
 from sklearn import metrics
 from sklearn.metrics import confusion_matrix
+
+import os
+import pandas as pd
+
+path = "."  
+
+filename_read = os.path.join(path, "full_df.csv")
+df = pd.read_csv(filename_read)
+print(df[0:6392])
+
+
+
