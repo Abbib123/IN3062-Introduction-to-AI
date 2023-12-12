@@ -43,3 +43,7 @@ for field in headers:
 
 for field in fields:
     print(field)
+    
+    print(f"Before drop: {df.columns}")
+df.drop('ID', axis = 1,inplace=True)
+print(f"After drop: {df.columns}")
