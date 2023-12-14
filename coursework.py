@@ -51,3 +51,16 @@ df.drop('filepath',axis=1, inplace=True)
 df.drop('target',axis=1, inplace=True)
 print(f"after drop: {df.columns}")
 print(df[0:6392])
+print(df.head())
+
+# FOR CNN STRUCTURE (DRAFT):
+# For model, Sequential()
+# 32 filters, Kernel size of 5x5 , 1 stride, Input shape?? Not sure yet, Same Padding
+# RELU activation
+# Pooling of 2,2
+# Flatten
+# Number of layers? Unsure yet but want maybe 3-4?
+# Continue layering, pooling, flattening etc
+# Condense to the number of labels (8 if we can get all working but limit to 2 at the beginning for a binary relation)
+# Softmax to determine % chance of which it will be 
+# Plot results on a graph with pyplot and determine what we get
