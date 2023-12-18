@@ -7,8 +7,8 @@ import io
 import os
 import matplotlib.pyplot as plt
 import seaborn as sns
-import imblearn
-from imblearn.over_sampling import SMOTE
+#import imblearn
+#from imblearn.over_sampling import SMOTE
 from sklearn.datasets import fetch_lfw_people
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
@@ -75,6 +75,15 @@ print(df.head())
 # Training = 3835 out of 6391 rows
 # Validation = 1278 out of 6391 rows
 # Test = 1278 out of 6391 rows
+X = df.filename
+y = df.labels
+
+X_train, X_test, y_train, y_test = train_test_split(X,y,test_size=0.2)
+
+print(X_train.shape)
+print(X_test.shape)
+print(y_train.shape)
+print(y_test.shape)
 
 # SMOTE Code for balancing data (NEED Data splitting first)
 #smote_count = Counter(y_train)
