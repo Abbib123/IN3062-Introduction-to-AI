@@ -7,6 +7,8 @@ import io
 import os
 import matplotlib.pyplot as plt
 import seaborn as sns
+import imblearn
+from imblearn.over_sampling import SMOTE
 from sklearn.datasets import fetch_lfw_people
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
@@ -67,3 +69,12 @@ print(df.head())
 # Condense to the number of labels (8 if we can get all working but limit to 2 at the beginning for a binary relation)
 # Softmax to determine % chance of which it will be 
 # Plot results on a graph with pyplot and determine what we get
+
+# Code for Splitting preprocessed data
+# TOTAL = 6391 separate rows of data we want approx a 3:1:1 split Training:Validation:Test
+# Training = 3835 out of 6391 rows
+# Validation = 1278 out of 6391 rows
+# Test = 1278 out of 6391 rows
+
+# SMOTE Code for balancing data (NEED Data splitting first)
+#smote_count = Counter(y_train)
