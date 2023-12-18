@@ -33,6 +33,7 @@ fields = []
 for field in fields:
     print(field)
 
+# Shows before an after drop of columns to show what we had and what we are using for the model
 print(f"before drop: {df.columns}")
 df.drop('ID',axis=1, inplace=True)
 df.drop('N',axis=1, inplace=True)
