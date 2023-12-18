@@ -7,8 +7,11 @@ import io
 import os
 import matplotlib.pyplot as plt
 import seaborn as sns
-#import imblearn
-#from imblearn.over_sampling import SMOTE
+
+from PIL import Image
+
+from collections import Counter
+from imblearn.over_sampling import SMOTE
 from sklearn.datasets import fetch_lfw_people
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
@@ -69,6 +72,21 @@ print(df.head())
 # Condense to the number of labels (8 if we can get all working but limit to 2 at the beginning for a binary relation)
 # Softmax to determine % chance of which it will be 
 # Plot results on a graph with pyplot and determine what we get
+width = 128 
+height = 128
+def preprocess_image(file_paths):
+    images = []
+    for file_path in file_paths:
+        # Load image
+        img = Image.open(file_path)
+        
+        # Preprocess: Resize, convert to array, normalize
+        img = img.resize((width, height))
+        img_array = np.array(img) / 255.0  # Normalize pixel values
+        
+        images.append(img_array)
+    
+    return np.array(images)
 
 # Code for Splitting preprocessed data
 # TOTAL = 6391 separate rows of data we want approx a 3:1:1 split Training:Validation:Test
@@ -85,5 +103,13 @@ print(X_test.shape)
 print(y_train.shape)
 print(y_test.shape)
 
+X_train_processed = preprocess_image(X_train)
+
 # SMOTE Code for balancing data (NEED Data splitting first)
-#smote_count = Counter(y_train)
+# Code provided by https://www.analyticsvidhya.com/blog/2020/10/overcoming-class-imbalance-using-smote-techniques/
+smote_count = Counter(y_train)
+print ('Before', smote_count)# Show the count before smote
+smt = SMOTE()
+X_train_smt, y_train_smt = smt.fit_resample(X_train_processed, y_train)
+post_smote_count = Counter(y_train_smt)
+print('After', post_smote_count)
