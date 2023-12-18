@@ -26,23 +26,13 @@ print(df[0:6392])
 
 df = pd.read_csv(filename_read, na_values=['NA', '?'])
 
-# Strip non-numerics
-#df = df.select_dtypes(include=['int', 'float'])
-
 headers = list(df.columns.values)
 fields = []
-
-#for field in headers:
-#    fields.append({
-#        'name' : field,
-#        'mean': df[field].mean(),
-#        'var': df[field].var(),
-#        'sdev': df[field].std()
-#    })
 
 for field in fields:
     print(field)
 
+# Shows before an after drop of columns to show what we had and what we are using for the model
 print(f"before drop: {df.columns}")
 df.drop('ID',axis=1, inplace=True)
 df.drop('N',axis=1, inplace=True)
@@ -59,7 +49,38 @@ df.drop('Left-Diagnostic Keywords',axis=1, inplace=True)
 df.drop('Right-Diagnostic Keywords',axis=1, inplace=True)
 df.drop('filepath',axis=1, inplace=True)
 df.drop('target',axis=1, inplace=True)
+df.drop('Patient Age', axis=1,inplace=True)
+df.drop('Patient Sex', axis=1,inplace=True)
 print(f"after drop: {df.columns}")
-# print(df[0:6392])
-
+print(df[0:6392])
 print(df.head())
+
+# FOR CNN STRUCTURE (DRAFT):
+# For model, Sequential()
+# 32 filters, Kernel size of 5x5 , 1 stride, Input shape?? Not sure yet, Same Padding
+# RELU activation
+# Pooling of 2,2
+# Flatten
+# Number of layers? Unsure yet but want maybe 3-4?
+# Continue layering, pooling, flattening etc
+# Condense to the number of labels (8 if we can get all working but limit to 2 at the beginning for a binary relation)
+# Softmax to determine % chance of which it will be 
+# Plot results on a graph with pyplot and determine what we get
+
+# Code for Splitting preprocessed data
+# TOTAL = 6391 separate rows of data we want approx a 3:1:1 split Training:Validation:Test
+# Training = 3835 out of 6391 rows
+# Validation = 1278 out of 6391 rows
+# Test = 1278 out of 6391 rows
+X = df.filename
+y = df.labels
+
+X_train, X_test, y_train, y_test = train_test_split(X,y,test_size=0.2)
+
+print(X_train.shape)
+print(X_test.shape)
+print(y_train.shape)
+print(y_test.shape)
+
+# SMOTE Code for balancing data (NEED Data splitting first)
+#smote_count = Counter(y_train)
