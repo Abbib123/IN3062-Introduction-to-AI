@@ -7,9 +7,7 @@ import io
 import os
 import matplotlib.pyplot as plt
 import seaborn as sns
-
 from PIL import Image
-
 from collections import Counter
 from imblearn.over_sampling import SMOTE
 from sklearn.datasets import fetch_lfw_people
@@ -24,7 +22,7 @@ from sklearn import metrics
 from sklearn import metrics
 from sklearn.metrics import confusion_matrix
 
-path = "."  
+path = "./IN3062-Introduction-to-AI/"  
 
 filename_read = os.path.join(path, "full_df.csv")
 df = pd.read_csv(filename_read)
