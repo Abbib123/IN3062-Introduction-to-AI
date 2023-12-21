@@ -64,18 +64,14 @@ height = 128
 def preprocess_image(file_paths):
     images = []
     for file_path in file_paths:
-        # Load image
+        # Load and preprocess image
         img = Image.open(file_path)
-        
-        # Preprocess: Resize, convert to array, normalize
         img = img.resize((width, height))
-        img_array = np.array(img) / 255.0  # Normalize pixel values
-        
+        img_array = np.array(img) / 255.0
         images.append(img_array)
-    
     return np.array(images)
 
-# Code for Splitting preprocessed data
+# Code for Splitting preprocessed data:
 # TOTAL = 6391 separate rows of data we want approx a 3:1:1 split Training:Validation:Test
 # Training = 3835 out of 6391 rows
 # Validation = 1278 out of 6391 rows
@@ -101,25 +97,17 @@ X_train_processed = preprocess_image(X_train)
 #post_smote_count = Counter(y_train_smt)
 #print('After', post_smote_count)
 
-# Flatten or reshape the data if needed
-# Example for flattening images
+# Flatten data to fit for smote
 X_train_processed_flat = X_train_processed.reshape(X_train_processed.shape[0], -1)
-
-# Check the shape of the flattened data
 print("Shape before SMOTE:", X_train_processed_flat.shape)
-
-# Apply SMOTE
 smt = SMOTE()
 X_train_smt, y_train_smt = smt.fit_resample(X_train_processed_flat, y_train)
-
-# Check the shape after SMOTE
 print("Shape after SMOTE:", X_train_smt.shape)
+smote_count = Counter(y_train) # Count for before
+print('Before:', smote_count)  # Pre-Smote Appplication
+post_smote_count = Counter(y_train_smt) # Count for after
+print('After:', post_smote_count)  # Post-Smote Application
 
-# Count the classes before and after SMOTE
-smote_count = Counter(y_train)
-print('Before:', smote_count)  # Show the count before SMOTE
-post_smote_count = Counter(y_train_smt)
-print('After:', post_smote_count)  # Show the count after SMOTE
 # FOR CNN STRUCTURE (DRAFT):
 # For model, Sequential()
 # 32 filters, Kernel size of 5x5 , 1 stride, Input shape?? Not sure yet, Same Padding
