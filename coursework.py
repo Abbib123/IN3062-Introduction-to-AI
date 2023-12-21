@@ -22,7 +22,7 @@ from sklearn import metrics
 from sklearn import metrics
 from sklearn.metrics import confusion_matrix
 
-path = "./IN3062-Introduction-to-AI/"  
+path = "."  
 
 filename_read = os.path.join(path, "full_df.csv")
 df = pd.read_csv(filename_read)
