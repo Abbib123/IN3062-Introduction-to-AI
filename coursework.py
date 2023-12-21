@@ -59,6 +59,7 @@ df.drop('Patient Age', axis=1,inplace=True)
 df.drop('Patient Sex', axis=1,inplace=True)
 print(f"after drop: {df.columns}")
 print(df[0:6392])
+<<<<<<< Updated upstream
 print(df.head())
 
 # FOR CNN STRUCTURE (DRAFT):
@@ -113,3 +114,6 @@ smt = SMOTE()
 X_train_smt, y_train_smt = smt.fit_resample(X_train_processed, y_train)
 post_smote_count = Counter(y_train_smt)
 print('After', post_smote_count)
+=======
+
+>>>>>>> Stashed changes
