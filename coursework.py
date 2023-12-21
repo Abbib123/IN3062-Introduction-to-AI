@@ -8,18 +8,12 @@ import matplotlib.pyplot as plt
 import tensorflow as tf
 import keras.utils
 import seaborn as sns
- feature/bb
- feature/bb
 from tensorflow import keras
 from sklearn import metrics
-
-
- main
 from PIL import Image
 from collections import Counter
 from imblearn.over_sampling import SMOTE
 from sklearn.datasets import fetch_lfw_people
- main
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import accuracy_score
@@ -28,7 +22,7 @@ from keras.layers import Dense, Activation, Flatten, Dropout
 from keras.layers import Conv2D, MaxPooling2D
 from keras.preprocessing.image import ImageDataGenerator
 
-path = "./IN3062-Introduction-to-AI"  
+path = "."  
 
 filename_read = os.path.join(path, "full_df.csv")
 df = pd.read_csv(filename_read)
