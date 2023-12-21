@@ -1,28 +1,26 @@
 # -*- coding: utf-8 -*-
 
-import pandas as pd
-import numpy as np
-import tensorflow as tf
 import io
 import os
+import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
+import tensorflow as tf
+import keras.utils
 import seaborn as sns
-
+from tensorflow import keras
+from sklearn import metrics
 from PIL import Image
-
 from collections import Counter
 from imblearn.over_sampling import SMOTE
 from sklearn.datasets import fetch_lfw_people
 from sklearn.model_selection import train_test_split
+from sklearn.metrics import confusion_matrix
 from sklearn.metrics import accuracy_score
-from tensorflow import keras
 from keras.models import Sequential
 from keras.layers import Dense, Activation, Flatten, Dropout
 from keras.layers import Conv2D, MaxPooling2D
 from keras.preprocessing.image import ImageDataGenerator
-from sklearn import metrics
-from sklearn import metrics
-from sklearn.metrics import confusion_matrix
 
 path = "."  
 
@@ -62,34 +60,19 @@ print(df[0:6392])
 <<<<<<< Updated upstream
 print(df.head())
 
-# FOR CNN STRUCTURE (DRAFT):
-# For model, Sequential()
-# 32 filters, Kernel size of 5x5 , 1 stride, Input shape?? Not sure yet, Same Padding
-# RELU activation
-# Pooling of 2,2
-# Flatten
-# Number of layers? Unsure yet but want maybe 3-4?
-# Continue layering, pooling, flattening etc
-# Condense to the number of labels (8 if we can get all working but limit to 2 at the beginning for a binary relation)
-# Softmax to determine % chance of which it will be 
-# Plot results on a graph with pyplot and determine what we get
 width = 128 
 height = 128
 def preprocess_image(file_paths):
     images = []
     for file_path in file_paths:
-        # Load image
+        # Load and preprocess image
         img = Image.open(file_path)
-        
-        # Preprocess: Resize, convert to array, normalize
         img = img.resize((width, height))
-        img_array = np.array(img) / 255.0  # Normalize pixel values
-        
+        img_array = np.array(img) / 255.0
         images.append(img_array)
-    
     return np.array(images)
 
-# Code for Splitting preprocessed data
+# Code for Splitting preprocessed data:
 # TOTAL = 6391 separate rows of data we want approx a 3:1:1 split Training:Validation:Test
 # Training = 3835 out of 6391 rows
 # Validation = 1278 out of 6391 rows
@@ -108,12 +91,17 @@ X_train_processed = preprocess_image(X_train)
 
 # SMOTE Code for balancing data (NEED Data splitting first)
 # Code provided by https://www.analyticsvidhya.com/blog/2020/10/overcoming-class-imbalance-using-smote-techniques/
-smote_count = Counter(y_train)
-print ('Before', smote_count)# Show the count before smote
+#smote_count = Counter(y_train)
+#print ('Before', smote_count)# Show the count before smote
+#smt = SMOTE()
+#X_train_smt, y_train_smt = smt.fit_resample(X_train_processed, y_train)
+#post_smote_count = Counter(y_train_smt)
+#print('After', post_smote_count)
+
+# Flatten data to fit for smote
+X_train_processed_flat = X_train_processed.reshape(X_train_processed.shape[0], -1)
+print("Shape before SMOTE:", X_train_processed_flat.shape)
 smt = SMOTE()
 X_train_smt, y_train_smt = smt.fit_resample(X_train_processed, y_train)
 post_smote_count = Counter(y_train_smt)
 print('After', post_smote_count)
-=======
-
->>>>>>> Stashed changes
