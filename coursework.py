@@ -57,7 +57,6 @@ df.drop('Patient Age', axis=1,inplace=True)
 df.drop('Patient Sex', axis=1,inplace=True)
 print(f"after drop: {df.columns}")
 print(df[0:6392])
-<<<<<<< Updated upstream
 print(df.head())
 
 width = 128 
