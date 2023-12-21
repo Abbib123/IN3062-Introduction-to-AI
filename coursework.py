@@ -94,13 +94,32 @@ X_train_processed = preprocess_image(X_train)
 
 # SMOTE Code for balancing data (NEED Data splitting first)
 # Code provided by https://www.analyticsvidhya.com/blog/2020/10/overcoming-class-imbalance-using-smote-techniques/
-smote_count = Counter(y_train)
-print ('Before', smote_count)# Show the count before smote
-smt = SMOTE()
-X_train_smt, y_train_smt = smt.fit_resample(X_train_processed, y_train)
-post_smote_count = Counter(y_train_smt)
-print('After', post_smote_count)
+#smote_count = Counter(y_train)
+#print ('Before', smote_count)# Show the count before smote
+#smt = SMOTE()
+#X_train_smt, y_train_smt = smt.fit_resample(X_train_processed, y_train)
+#post_smote_count = Counter(y_train_smt)
+#print('After', post_smote_count)
 
+# Flatten or reshape the data if needed
+# Example for flattening images
+X_train_processed_flat = X_train_processed.reshape(X_train_processed.shape[0], -1)
+
+# Check the shape of the flattened data
+print("Shape before SMOTE:", X_train_processed_flat.shape)
+
+# Apply SMOTE
+smt = SMOTE()
+X_train_smt, y_train_smt = smt.fit_resample(X_train_processed_flat, y_train)
+
+# Check the shape after SMOTE
+print("Shape after SMOTE:", X_train_smt.shape)
+
+# Count the classes before and after SMOTE
+smote_count = Counter(y_train)
+print('Before:', smote_count)  # Show the count before SMOTE
+post_smote_count = Counter(y_train_smt)
+print('After:', post_smote_count)  # Show the count after SMOTE
 # FOR CNN STRUCTURE (DRAFT):
 # For model, Sequential()
 # 32 filters, Kernel size of 5x5 , 1 stride, Input shape?? Not sure yet, Same Padding
