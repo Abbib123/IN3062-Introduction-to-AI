@@ -13,6 +13,7 @@ from sklearn import metrics
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import accuracy_score
+from sklearn.datasets import make_classification
 from keras.models import Sequential
 from keras.layers import Dense, Activation, Flatten, Dropout
 from keras.layers import Conv2D, MaxPooling2D
@@ -52,6 +53,7 @@ df.drop('target',axis=1, inplace=True)
 df.drop('Patient Age', axis=1,inplace=True)
 df.drop('Patient Sex', axis=1,inplace=True)
 print(f"after drop: {df.columns}")
+
 print(df[0:6392])
 print(df.head())
 
@@ -82,5 +84,19 @@ print(X_test.shape)
 print(y_train.shape)
 print(y_test.shape)
 
+print(df.shape)
+
+
+# Print the shapes of X and y
+print("X shape:", X.shape)
+print("y shape:", y.shape)
+
 # SMOTE Code for balancing data (NEED Data splitting first)
 #smote_count = Counter(y_train)
+
+print(df['labels'].value_counts())
+
+names = []
+labels = []
+
+# with open()
