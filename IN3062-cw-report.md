@@ -24,6 +24,7 @@ appendix to this section, and code quality (e.g. commenting) contributes. (30%)
 
 Report, evaluation: analysis and critical evaluation of results. (10%)
 
+
 ## References
 
 Reflection and discussion (20%)
@@ -31,3 +32,5 @@ Reflection and discussion (20%)
 ![Alt text](image.png)
 
 ![Alt text](image-1.png)
+
+![Alt text](image-2.png)
