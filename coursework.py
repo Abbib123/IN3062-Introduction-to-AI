@@ -26,7 +26,7 @@ path = "."
 
 filename_read = os.path.join(path, "full_df.csv")
 df = pd.read_csv(filename_read)
-print(df[0:6392])
+# print(df[0:6392])
 
 df = pd.read_csv(filename_read, na_values=['NA', '?'])
 
@@ -37,7 +37,7 @@ for field in fields:
     print(field)
 
 # Shows before an after drop of columns to show what we had and what we are using for the model
-print(f"before drop: {df.columns}")
+# print(f"before drop: {df.columns}")
 df.drop('ID',axis=1, inplace=True)
 df.drop('N',axis=1, inplace=True)
 df.drop('D',axis=1, inplace=True)
@@ -55,9 +55,9 @@ df.drop('filepath',axis=1, inplace=True)
 df.drop('target',axis=1, inplace=True)
 df.drop('Patient Age', axis=1,inplace=True)
 df.drop('Patient Sex', axis=1,inplace=True)
-print(f"after drop: {df.columns}")
-print(df[0:6392])
-print(df.head())
+# print(f"after drop: {df.columns}")
+# print(df[0:6392])
+# print(df.head())
 
 width = 128 
 height = 128
@@ -117,14 +117,14 @@ X_train_processed = preprocess_image(X_train)
 #4. preparing to build the network
 
 batch_size = 128
-print(y.shape)
+# print(y.shape)
 num_classes = 8
 epochs = 32
 save_dir = './' 
 model_name = 'keras_lfw_trained_model.h5'
 
 model = Sequential()
-model.add(Conv2D(32, kernel_size=(3, 3), strides=1, padding='same', input_shape= (62, 47, 1)))
+model.add(Conv2D(32, kernel_size=(3, 3), strides=1, padding='same', input_shape= (128, 128, 3)))
 model.add(Activation('relu'))
 model.add(MaxPooling2D(pool_size=(2, 2)))
 
@@ -139,8 +139,9 @@ model.compile(loss='categorical_crossentropy',
               metrics=['accuracy'])
 
 model.summary()
-
-# history = model.fit(X_train_processed,y_train,verbose=2,epochs=24)
+# Commented out as used for checking in earlier tests
+# print(X_train_processed)
+# print(y_train)
 
 # model2 = Sequential()
 # model2.add(Conv2D(64, kernel_size=(4, 4), activation='relu', strides=1, padding='same', input_shape= X_train_processed[0].shape))
@@ -159,30 +160,38 @@ model.summary()
 #5. make predictions
 
 #make predictions (will give a probability distribution)
-pred = model.predict(X_test)
+X_test_processed = preprocess_image(X_test)
+pred = model.predict(X_test_processed)
 #now pick the most likely outcome
 pred = np.argmax(pred,axis=1)
-y_compare = np.argmax(y_test,axis=1) 
+print(pred)
+print("pred shape^")
+print(y_test.shape)
+print("y test shape^")
+y_compare = np.argmax(y_test)
+print(y_compare)
 #and calculate accuracy
 score = metrics.accuracy_score(y_compare, pred)
 print("Accuracy score: {}".format(score))
 
 #6. plot data 
 
+# model fit
+#history = model.fit(X_train_processed,y_train,verbose=1,epochs=24)
 # Plot training & validation loss values
-print(history.history.keys())
-plt.plot(history.history['loss'])
-plt.title('Model loss/accuracy')
-plt.ylabel('Loss')
-plt.xlabel('Epoch')
-plt.legend(['Loss'], loc='upper left')
+# print(history.history.keys())
+# plt.plot(history.history['loss'])
+# plt.title('Model loss/accuracy')
+# plt.ylabel('Loss')
+# plt.xlabel('Epoch')
+# plt.legend(['Loss'], loc='upper left')
 
-plt2=plt.twinx()
-color = 'red'
-plt2.plot(history.history['accuracy'],color=color)
-plt2.ylabel('Accuracy')
-plt2.legend(['Accuracy'], loc='upper center')
-plt2.show()
+# plt=plt.twinx()
+# color = 'red'
+# plt.plot(history.history['accuracy'],color=color)
+# plt.ylabel('Accuracy')
+# plt.legend(['Accuracy'], loc='upper center')
+# plt.show()
 
 #7. add confusion matrix to testing data
 
