@@ -77,19 +77,24 @@ def preprocess_image(file_paths):
 # Training = 3835 out of 6391 rows
 # Validation = 1278 out of 6391 rows
 # Test = 1278 out of 6391 rows
+
+# Prepping test train split for x and y
 X = df.filename
 y = df.labels
+X_train_processed = preprocess_image(X)
+#y = tf.keras.utils.to_categorical(y)
+X_train, X_test, y_train, y_test = train_test_split(X_train_processed,y,test_size=0.2)
 
-X_train, X_test, y_train, y_test = train_test_split(X,y,test_size=0.2)
-
+# Expand to 3 dimensional
+X_train = np.expand_dims(X_train, axis=3)
+X_test = np.expand_dims(X_test, axis=3)
 # print(X_train.shape)
 # print(X_test.shape)
 # print(y_train.shape)
 # print(y_test.shape)
 
-X_train_processed = preprocess_image(X_train)
 # result = (X_train_processed[:1])
-# np.set_printoptions(threshold=np.inf)
+np.set_printoptions(threshold=np.inf)
 # print(result)
 
 # SMOTE Code for balancing data (NEED Data splitting first)
@@ -117,8 +122,9 @@ X_train_processed = preprocess_image(X_train)
 #4. preparing to build the network
 
 batch_size = 128
-# print(y.shape)
-num_classes = 8
+print(y_train.shape)
+print("Y shape^")
+num_classes = len(np.unique(y_train.shape[0]))
 epochs = 32
 save_dir = './' 
 model_name = 'keras_lfw_trained_model.h5'
@@ -139,30 +145,16 @@ model.compile(loss='categorical_crossentropy',
               metrics=['accuracy'])
 
 model.summary()
-# Commented out as used for checking in earlier tests
-# print(X_train_processed)
-# print(y_train)
 
-# model2 = Sequential()
-# model2.add(Conv2D(64, kernel_size=(4, 4), activation='relu', strides=1, padding='same', input_shape= X_train_processed[0].shape))
-# model2.add(Conv2D(32, (3, 3), activation='relu'))
-# model2.add(MaxPooling2D(pool_size=(2, 2)))
-# model2.add(Conv2D(64, (3, 3), activation='relu', padding='same'))
-# model2.add(Conv2D(64, (3, 3), activation='relu'))
-# model2.add(MaxPooling2D(pool_size=(2, 2)))
-
-# model2.add(Flatten())
-# model2.add(Dense(128, activation='relu'))
-
-# model2.add(Dense(num_classes))
-# model2.add(Activation('softmax'))
+#X_train = np.squeeze(X_train, axis=3)
+history = model.fit(X_train,y_train,verbose=1,epochs=24)
 
 #5. make predictions
 
 #make predictions (will give a probability distribution)
-X_test_processed = preprocess_image(X_test)
-pred = model.predict(X_test_processed)
-#now pick the most likely outcome
+
+pred = model.predict(X_test)
+print(pred)
 pred = np.argmax(pred,axis=1)
 print(pred)
 print("pred shape^")
@@ -176,25 +168,38 @@ print("Accuracy score: {}".format(score))
 
 #6. plot data 
 
-# model fit
-#history = model.fit(X_train_processed,y_train,verbose=1,epochs=24)
 # Plot training & validation loss values
-# print(history.history.keys())
-# plt.plot(history.history['loss'])
-# plt.title('Model loss/accuracy')
-# plt.ylabel('Loss')
-# plt.xlabel('Epoch')
-# plt.legend(['Loss'], loc='upper left')
 
-# plt=plt.twinx()
-# color = 'red'
-# plt.plot(history.history['accuracy'],color=color)
-# plt.ylabel('Accuracy')
-# plt.legend(['Accuracy'], loc='upper center')
-# plt.show()
+print(history.history.keys())
+plt.plot(history.history['loss'])
+plt.title('Model loss/accuracy')
+plt.ylabel('Loss')
+plt.xlabel('Epoch')
+plt.legend(['Loss'], loc='upper left')
+
+plt=plt.twinx()
+color = 'red'
+plt.plot(history.history['accuracy'],color=color)
+plt.ylabel('Accuracy')
+plt.legend(['Accuracy'], loc='upper center')
+plt.show()
 
 #7. add confusion matrix to testing data
 
 # look layer by layer using activation maps for model analysis 
 
 #recommended = CNN's | SVM's | KNN's | accuracy matrix
+
+# model2 = Sequential()
+# model2.add(Conv2D(64, kernel_size=(4, 4), activation='relu', strides=1, padding='same', input_shape= X_train[0].shape))
+# model2.add(Conv2D(32, (3, 3), activation='relu'))
+# model2.add(MaxPooling2D(pool_size=(2, 2)))
+# model2.add(Conv2D(64, (3, 3), activation='relu', padding='same'))
+# model2.add(Conv2D(64, (3, 3), activation='relu'))
+# model2.add(MaxPooling2D(pool_size=(2, 2)))
+
+# model2.add(Flatten())
+# model2.add(Dense(128, activation='relu'))
+
+# model2.add(Dense(num_classes))
+# model2.add(Activation('softmax'))
