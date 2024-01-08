@@ -104,3 +104,49 @@ smt = SMOTE()
 X_train_smt, y_train_smt = smt.fit_resample(X_train_processed, y_train)
 post_smote_count = Counter(y_train_smt)
 print('After', post_smote_count)
+
+#testing scikit learn
+
+
+
+
+
+batch_size = 128
+num_classes = y.shape[1]
+epochs = 32
+save_dir = './' 
+
+
+model = Sequential()
+model.add(Conv2D(32, kernel_size=(3, 3), strides=1, padding='same', input_shape= (62, 47, 1)))
+model.add(Activation('relu'))
+model.add(MaxPooling2D(pool_size=(2, 2)))
+
+model.add(Flatten())
+model.add(Dense(128))
+model.add(Activation('relu'))
+model.add(Dense(num_classes))
+model.add(Activation('softmax'))
+
+model.compile(loss='categorical_crossentropy',
+              optimizer='adam',
+              metrics=['accuracy'])
+
+model.summary()
+
+history = model.fit(X_train,y_train,verbose=2,epochs=24)
+
+#make predictions (will give a probability distribution)
+pred = model.predict(X_test)
+#now pick the most likely outcome
+pred = np.argmax(pred,axis=1)
+y_compare = np.argmax(y_test,axis=1) 
+#and calculate accuracy
+score = metrics.accuracy_score(y_compare, pred)
+print("Accuracy score: {}".format(score))
+
+
+
+
+
+
