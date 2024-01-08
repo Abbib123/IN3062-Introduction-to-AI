@@ -10,6 +10,7 @@ import keras.utils
 import seaborn as sns
 from tensorflow import keras
 from sklearn import metrics
+from sklearn.preprocessing import LabelEncoder
 from PIL import Image
 from collections import Counter
 from imblearn.over_sampling import SMOTE
@@ -82,12 +83,14 @@ def preprocess_image(file_paths):
 X = df.filename
 y = df.labels
 X_train_processed = preprocess_image(X)
-#y = tf.keras.utils.to_categorical(y)
+label_encoder = LabelEncoder()
+y_encoded = label_encoder.fit_transform(y)
+y = tf.keras.utils.to_categorical(y_encoded)
 X_train, X_test, y_train, y_test = train_test_split(X_train_processed,y,test_size=0.2)
 
 # Expand to 3 dimensional
-X_train = np.expand_dims(X_train, axis=3)
-X_test = np.expand_dims(X_test, axis=3)
+# X_train = np.expand_dims(X_train, axis=3)
+# X_test = np.expand_dims(X_test, axis=3)
 # print(X_train.shape)
 # print(X_test.shape)
 # print(y_train.shape)
@@ -122,9 +125,9 @@ np.set_printoptions(threshold=np.inf)
 #4. preparing to build the network
 
 batch_size = 128
-print(y_train.shape)
+print(y.shape)
 print("Y shape^")
-num_classes = len(np.unique(y_train.shape[0]))
+num_classes = 8
 epochs = 32
 save_dir = './' 
 model_name = 'keras_lfw_trained_model.h5'
@@ -154,14 +157,14 @@ history = model.fit(X_train,y_train,verbose=1,epochs=24)
 #make predictions (will give a probability distribution)
 
 pred = model.predict(X_test)
-print(pred)
+#print(pred)
 pred = np.argmax(pred,axis=1)
-print(pred)
-print("pred shape^")
-print(y_test.shape)
-print("y test shape^")
-y_compare = np.argmax(y_test)
-print(y_compare)
+# print(pred)
+# print("pred shape^")
+# print(y_test.shape)
+# print("y test shape^")
+y_compare = np.argmax(y_test,axis=1)
+#print(y_compare)
 #and calculate accuracy
 score = metrics.accuracy_score(y_compare, pred)
 print("Accuracy score: {}".format(score))
@@ -170,20 +173,19 @@ print("Accuracy score: {}".format(score))
 
 # Plot training & validation loss values
 
-print(history.history.keys())
-plt.plot(history.history['loss'])
-plt.title('Model loss/accuracy')
+#print(history.history.keys())
+plt.figure(1)
+plt.plot(history.history['loss'],color = 'blue')
+plt.title('Model loss/Accuracy')
 plt.ylabel('Loss')
 plt.xlabel('Epoch')
-plt.legend(['Loss'], loc='upper left')
+plt.legend(['Loss'],loc='upper left')
 
-plt=plt.twinx()
-color = 'red'
-plt.plot(history.history['accuracy'],color=color)
+plt2=plt.twinx()
+plt2.plot(history.history['accuracy'],color='red')
 plt.ylabel('Accuracy')
-plt.legend(['Accuracy'], loc='upper center')
+plt2.legend(['Accuracy'], loc='upper center')
 plt.show()
-
 #7. add confusion matrix to testing data
 
 # look layer by layer using activation maps for model analysis 
