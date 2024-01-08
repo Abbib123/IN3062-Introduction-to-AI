@@ -23,7 +23,7 @@ from keras.layers import Dense, Activation, Flatten, Dropout
 from keras.layers import Conv2D, MaxPooling2D
 from keras.preprocessing.image import ImageDataGenerator
 
-path = "."  
+path = "./IN3062-Introduction-to-AI"  
 
 filename_read = os.path.join(path, "full_df.csv")
 df = pd.read_csv(filename_read)
@@ -105,4 +105,4 @@ print("Shape before SMOTE:", X_train_processed_flat.shape)
 smt = SMOTE()
 X_train_smt, y_train_smt = smt.fit_resample(X_train_processed, y_train)
 post_smote_count = Counter(y_train_smt)
-print('After', post_smote_count)
+print('After', post_smote_count) 

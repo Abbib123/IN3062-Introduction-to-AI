@@ -29,3 +29,5 @@ Report, evaluation: analysis and critical evaluation of results. (10%)
 Reflection and discussion (20%)
 
 ![Alt text](image.png)
+
+![Alt text](image-1.png)
