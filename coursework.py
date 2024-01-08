@@ -109,13 +109,13 @@ print('After', post_smote_count)
 
 
 
-
+#4. preparing to build the network
 
 batch_size = 128
 num_classes = y.shape[1]
 epochs = 32
 save_dir = './' 
-
+model_name = 'keras_lfw_trained_model.h5'
 
 model = Sequential()
 model.add(Conv2D(32, kernel_size=(3, 3), strides=1, padding='same', input_shape= (62, 47, 1)))
@@ -136,6 +136,22 @@ model.summary()
 
 history = model.fit(X_train,y_train,verbose=2,epochs=24)
 
+model = Sequential()
+model.add(Conv2D(64, kernel_size=(4, 4), activation='relu', strides=1, padding='same', input_shape= X_train[0].shape))
+model.add(Conv2D(32, (3, 3), activation='relu'))
+model.add(MaxPooling2D(pool_size=(2, 2)))
+model.add(Conv2D(64, (3, 3), activation='relu', padding='same'))
+model.add(Conv2D(64, (3, 3), activation='relu'))
+model.add(MaxPooling2D(pool_size=(2, 2)))
+
+model.add(Flatten())
+model.add(Dense(128, activation='relu'))
+
+model.add(Dense(num_classes))
+model.add(Activation('softmax'))
+
+#5. make predictions
+
 #make predictions (will give a probability distribution)
 pred = model.predict(X_test)
 #now pick the most likely outcome
@@ -144,6 +160,29 @@ y_compare = np.argmax(y_test,axis=1)
 #and calculate accuracy
 score = metrics.accuracy_score(y_compare, pred)
 print("Accuracy score: {}".format(score))
+
+#6. plot data 
+
+# Plot training & validation loss values
+print(history.history.keys())
+plt.plot(history.history['loss'])
+plt.title('Model loss/accuracy')
+plt.ylabel('Loss')
+plt.xlabel('Epoch')
+plt.legend(['Loss'], loc='upper left')
+
+plt2=plt.twinx()
+color = 'red'
+plt2.plot(history.history['accuracy'],color=color)
+plt.ylabel('Accuracy')
+plt2.legend(['Accuracy'], loc='upper center')
+plt.show()
+
+#7. add confusion matrix to testing data
+
+look layer by layer using activation maps for model analysis 
+
+#recommended = CNN's | SVM's | KNN's | accuracy matrix
 
 
 
