@@ -65,6 +65,8 @@ def preprocess_image(file_paths):
     images = []
     for file_path in file_paths:
         # Load and preprocess image
+        print(file_path)
+        print(file_paths)
         img = Image.open(file_path)
         img = img.resize((width, height))
         img_array = np.array(img) / 255.0
@@ -174,18 +176,12 @@ plt.legend(['Loss'], loc='upper left')
 plt2=plt.twinx()
 color = 'red'
 plt2.plot(history.history['accuracy'],color=color)
-plt.ylabel('Accuracy')
+plt2.ylabel('Accuracy')
 plt2.legend(['Accuracy'], loc='upper center')
-plt.show()
+plt2.show()
 
 #7. add confusion matrix to testing data
-
+'''
 look layer by layer using activation maps for model analysis 
-
+'''
 #recommended = CNN's | SVM's | KNN's | accuracy matrix
-
-
-
-
-
-
