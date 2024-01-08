@@ -64,10 +64,9 @@ height = 128
 def preprocess_image(file_paths):
     images = []
     for file_path in file_paths:
+        full_path = './images/' + file_path
         # Load and preprocess image
-        print(file_path)
-        print(file_paths)
-        img = Image.open(file_path)
+        img = Image.open(full_path)
         img = img.resize((width, height))
         img_array = np.array(img) / 255.0
         images.append(img_array)
@@ -83,12 +82,15 @@ y = df.labels
 
 X_train, X_test, y_train, y_test = train_test_split(X,y,test_size=0.2)
 
-print(X_train.shape)
-print(X_test.shape)
-print(y_train.shape)
-print(y_test.shape)
+# print(X_train.shape)
+# print(X_test.shape)
+# print(y_train.shape)
+# print(y_test.shape)
 
 X_train_processed = preprocess_image(X_train)
+# result = (X_train_processed[:1])
+# np.set_printoptions(threshold=np.inf)
+# print(result)
 
 # SMOTE Code for balancing data (NEED Data splitting first)
 # Code provided by https://www.analyticsvidhya.com/blog/2020/10/overcoming-class-imbalance-using-smote-techniques/
@@ -100,12 +102,13 @@ X_train_processed = preprocess_image(X_train)
 #print('After', post_smote_count)
 
 # Flatten data to fit for smote
-X_train_processed_flat = X_train_processed.reshape(X_train_processed.shape[0], -1)
-print("Shape before SMOTE:", X_train_processed_flat.shape)
-smt = SMOTE()
-X_train_smt, y_train_smt = smt.fit_resample(X_train_processed, y_train)
-post_smote_count = Counter(y_train_smt)
-print('After', post_smote_count)
+
+# X_train_processed_flat = X_train_processed.reshape(X_train_processed.shape[0], -1)
+# print("Shape before SMOTE:", X_train_processed_flat.shape)
+# smt = SMOTE()
+# X_train_smt, y_train_smt = smt.fit_resample(X_train_processed, y_train)
+# post_smote_count = Counter(y_train_smt)
+# print('After', post_smote_count)
 
 #testing scikit learn
 
@@ -114,7 +117,8 @@ print('After', post_smote_count)
 #4. preparing to build the network
 
 batch_size = 128
-num_classes = y.shape[1]
+print(y.shape)
+num_classes = 8
 epochs = 32
 save_dir = './' 
 model_name = 'keras_lfw_trained_model.h5'
@@ -136,21 +140,21 @@ model.compile(loss='categorical_crossentropy',
 
 model.summary()
 
-history = model.fit(X_train,y_train,verbose=2,epochs=24)
+# history = model.fit(X_train_processed,y_train,verbose=2,epochs=24)
 
-model = Sequential()
-model.add(Conv2D(64, kernel_size=(4, 4), activation='relu', strides=1, padding='same', input_shape= X_train[0].shape))
-model.add(Conv2D(32, (3, 3), activation='relu'))
-model.add(MaxPooling2D(pool_size=(2, 2)))
-model.add(Conv2D(64, (3, 3), activation='relu', padding='same'))
-model.add(Conv2D(64, (3, 3), activation='relu'))
-model.add(MaxPooling2D(pool_size=(2, 2)))
+# model2 = Sequential()
+# model2.add(Conv2D(64, kernel_size=(4, 4), activation='relu', strides=1, padding='same', input_shape= X_train_processed[0].shape))
+# model2.add(Conv2D(32, (3, 3), activation='relu'))
+# model2.add(MaxPooling2D(pool_size=(2, 2)))
+# model2.add(Conv2D(64, (3, 3), activation='relu', padding='same'))
+# model2.add(Conv2D(64, (3, 3), activation='relu'))
+# model2.add(MaxPooling2D(pool_size=(2, 2)))
 
-model.add(Flatten())
-model.add(Dense(128, activation='relu'))
+# model2.add(Flatten())
+# model2.add(Dense(128, activation='relu'))
 
-model.add(Dense(num_classes))
-model.add(Activation('softmax'))
+# model2.add(Dense(num_classes))
+# model2.add(Activation('softmax'))
 
 #5. make predictions
 
@@ -181,7 +185,7 @@ plt2.legend(['Accuracy'], loc='upper center')
 plt2.show()
 
 #7. add confusion matrix to testing data
-'''
-look layer by layer using activation maps for model analysis 
-'''
+
+# look layer by layer using activation maps for model analysis 
+
 #recommended = CNN's | SVM's | KNN's | accuracy matrix
