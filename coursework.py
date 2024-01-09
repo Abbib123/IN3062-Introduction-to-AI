@@ -97,7 +97,7 @@ X_train, X_test, y_train, y_test = train_test_split(X_train_processed,y,test_siz
 # print(y_test.shape)
 
 # result = (X_train_processed[:1])
-np.set_printoptions(threshold=np.inf)
+#np.set_printoptions(threshold=np.inf)
 # print(result)
 
 # SMOTE Code for balancing data (NEED Data splitting first)
@@ -118,15 +118,11 @@ np.set_printoptions(threshold=np.inf)
 # post_smote_count = Counter(y_train_smt)
 # print('After', post_smote_count)
 
-#testing scikit learn
-
-
-
 #4. preparing to build the network
 
 batch_size = 128
-print(y.shape)
-print("Y shape^")
+# print(y.shape)
+# print("Y shape^")
 num_classes = 8
 epochs = 32
 save_dir = './' 
@@ -150,7 +146,7 @@ model.compile(loss='categorical_crossentropy',
 model.summary()
 
 #X_train = np.squeeze(X_train, axis=3)
-history = model.fit(X_train,y_train,verbose=1,epochs=24)
+history = model.fit(X_train,y_train,verbose=1,epochs=60)
 
 #5. make predictions
 
