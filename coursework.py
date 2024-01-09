@@ -60,7 +60,7 @@ df.drop('Patient Sex', axis=1,inplace=True)
 # print(df[0:6392])
 # print(df.head())
 
-width = 256 
+width = 256
 height = 256
 def preprocess_image(file_paths):
     images = []
