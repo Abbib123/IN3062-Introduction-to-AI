@@ -1,6 +1,6 @@
 # Title, including module IN3062 or INM701
 
-**Authors: Bilal Bismillah, Abbib Akram, Ethan Hunt**
+**Authors: Bilal Bismillah, Abbib Akram, Ethan Brewer**
 
 [Link to github](https://github.com/Abbib123/IN3062-Introduction-to-AI.git)
 
