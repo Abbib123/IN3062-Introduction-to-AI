@@ -60,8 +60,8 @@ df.drop('Patient Sex', axis=1,inplace=True)
 # print(df[0:6392])
 # print(df.head())
 
-width = 128 
-height = 128
+width = 256 
+height = 256
 def preprocess_image(file_paths):
     images = []
     for file_path in file_paths:
@@ -128,31 +128,54 @@ epochs = 32
 save_dir = './' 
 model_name = 'keras_lfw_trained_model.h5'
 
-model = Sequential()
-model.add(Conv2D(32, kernel_size=(3, 3), strides=1, padding='same', input_shape= (128, 128, 3)))
-model.add(Activation('relu'))
-model.add(MaxPooling2D(pool_size=(2, 2)))
+# If using model, uncimment these lines
+# model = Sequential()
+# model.add(Conv2D(32, kernel_size=(3, 3), strides=1, padding='same', input_shape= (128, 128, 3)))
+# model.add(Activation('relu'))
+# model.add(MaxPooling2D(pool_size=(2, 2)))
 
-model.add(Flatten())
-model.add(Dense(128))
-model.add(Activation('relu'))
-model.add(Dense(num_classes))
-model.add(Activation('softmax'))
+# model.add(Flatten())
+# model.add(Dense(128))
+# model.add(Activation('relu'))
+# model.add(Dense(num_classes))
+# model.add(Activation('softmax'))
 
-model.compile(loss='categorical_crossentropy',
-              optimizer='adam',
+# model.compile(loss='categorical_crossentropy',
+#               optimizer='adam',
+#               metrics=['accuracy'])
+
+# model.summary()
+
+# If using model2, uncomment these lines
+model2 = Sequential()
+model2.add(Conv2D(64, kernel_size=(3,3), activation='relu', strides=1, padding='same', input_shape=(256,256,3)))
+model2.add(Conv2D(64, kernel_size=(3,3), activation='relu'))
+model2.add(MaxPooling2D(pool_size=(2, 2)))
+model2.add(Conv2D(64, kernel_size=(3,3), activation='relu',strides = 1, padding='same'))
+model2.add(Conv2D(64, kernel_size=(3,3), activation='relu',strides = 1, padding = 'same'))
+model2.add(MaxPooling2D(pool_size=(2, 2)))
+
+model2.add(Flatten())
+model2.add(Dense(128))
+model2.add(Activation('relu'))
+
+model2.add(Dense(num_classes))
+model2.add(Activation('softmax'))
+custom = tf.keras.optimizers.Adam(learning_rate=0.01)
+model2.compile(loss='categorical_crossentropy',
+              optimizer= custom,
               metrics=['accuracy'])
+model2.summary()
 
-model.summary()
-
-#X_train = np.squeeze(X_train, axis=3)
-history = model.fit(X_train,y_train,verbose=1,epochs=60)
+history = model2.fit(X_train,y_train,verbose=1,epochs=20)
 
 #5. make predictions
-
 #make predictions (will give a probability distribution)
 
-pred = model.predict(X_test)
+# If using model, uncomment this line
+#pred = model.predict(X_test)
+# If using model2, uncomment this line
+pred = model2.predict(X_test)
 #print(pred)
 pred = np.argmax(pred,axis=1)
 # print(pred)
@@ -187,17 +210,3 @@ plt.show()
 # look layer by layer using activation maps for model analysis 
 
 #recommended = CNN's | SVM's | KNN's | accuracy matrix
-
-# model2 = Sequential()
-# model2.add(Conv2D(64, kernel_size=(4, 4), activation='relu', strides=1, padding='same', input_shape= X_train[0].shape))
-# model2.add(Conv2D(32, (3, 3), activation='relu'))
-# model2.add(MaxPooling2D(pool_size=(2, 2)))
-# model2.add(Conv2D(64, (3, 3), activation='relu', padding='same'))
-# model2.add(Conv2D(64, (3, 3), activation='relu'))
-# model2.add(MaxPooling2D(pool_size=(2, 2)))
-
-# model2.add(Flatten())
-# model2.add(Dense(128, activation='relu'))
-
-# model2.add(Dense(num_classes))
-# model2.add(Activation('softmax'))
