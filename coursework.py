@@ -60,8 +60,8 @@ df.drop('Patient Sex', axis=1,inplace=True)
 # print(df[0:6392])
 # print(df.head())
 
-width = 256
-height = 256
+width = 128
+height = 128
 def preprocess_image(file_paths):
     images = []
     for file_path in file_paths:
@@ -83,9 +83,9 @@ def preprocess_image(file_paths):
 X = df.filename
 y = df.labels
 X_train_processed = preprocess_image(X)
-label_encoder = LabelEncoder()
-y_encoded = label_encoder.fit_transform(y)
-y = tf.keras.utils.to_categorical(y_encoded)
+lab_enc= LabelEncoder()
+y_enc = lab_enc.fit_transform(y)
+y = tf.keras.utils.to_categorical(y_enc)
 X_train, X_test, y_train, y_test = train_test_split(X_train_processed,y,test_size=0.2)
 
 # Expand to 3 dimensional
@@ -148,7 +148,7 @@ model_name = 'keras_lfw_trained_model.h5'
 
 # If using model2, uncomment these lines
 model2 = Sequential()
-model2.add(Conv2D(64, kernel_size=(3,3), activation='relu', strides=1, padding='same', input_shape=(256,256,3)))
+model2.add(Conv2D(64, kernel_size=(3,3), activation='relu', strides=1, padding='same', input_shape=(128,128,3)))
 model2.add(Conv2D(64, kernel_size=(3,3), activation='relu'))
 model2.add(MaxPooling2D(pool_size=(2, 2)))
 model2.add(Conv2D(64, kernel_size=(3,3), activation='relu',strides = 1, padding='same'))
@@ -161,7 +161,7 @@ model2.add(Activation('relu'))
 
 model2.add(Dense(num_classes))
 model2.add(Activation('softmax'))
-custom = tf.keras.optimizers.Adam(learning_rate=0.01)
+custom = tf.keras.optimizers.Adam(learning_rate=0.0015)
 model2.compile(loss='categorical_crossentropy',
               optimizer= custom,
               metrics=['accuracy'])
